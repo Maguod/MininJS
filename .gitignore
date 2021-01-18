@@ -1,5 +1,5 @@
 .idea
-.code
+.vscode
 .gitignore
 dist
 node_modules
