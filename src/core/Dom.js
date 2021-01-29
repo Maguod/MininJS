@@ -33,6 +33,31 @@ class Dom {
         return this
     }
 
+    closest(selector) {
+        return $(this.$el.closest(selector)) //мне не просто вернули, а сразу обернули в обертку нашего самописного DOM
+    }
+
+    getCoords() {
+        return this.$el.getBoundingClientRect()
+    }
+    get data() {
+        return this.$el.dataset
+    }
+    findAll(selector) {
+        return this.$el.querySelectorAll(selector)
+    }
+    css(styles = {}) {
+        for (const styleEl in styles)  {
+            //проверка. Она обязательна для этого цикла for in
+            // if(styles.hasOwnProperty(styleEl)) {
+            //     console.log(styleEl, styles[styleEl])
+            // } поэтому для обхода объекта используем более простую и удобную конструкцию
+            Object.keys(styles).forEach(key => {
+                this.$el.style[key] = styles[key]
+            })
+
+        }
+    }
     on(eventType, callback) {
         this.$el.addEventListener(eventType, callback)
     }
