@@ -2,24 +2,32 @@ const CODES = {
     A: 65,
     Z: 90
 }
-function toCell(content = '') {
+
+function toCell(_, col) {
     return `
-    <div class="cell" contenteditable="">${content}</div>
+    <div class="cell" contenteditable data-col="${col}"></div>
     `
 }
-function toColumn(el) {
+
+function toColumn(el, index) {
     return `
-     <div class="column">${el}</div>
+     <div class="column" data-type="resizable" data-col="${index}">
+        ${el}
+        <div class="col-resize" data-resize="col"></div>    
+     </div>
     `
 }
-function createRow(content, numberRow = '') {
+
+function createRow(index,  content) {
+    const resize = index ? '<div class="row-resize" data-resize="row"></div>' : ''
     return `
-    <div class="row">
-        <div class="row-info">${numberRow}</div>
+    <div class="row" data-type="resizable">
+        <div class="row-info">${index ? index : ''} ${resize}</div>
         <div class="row-data">${content}</div>
     </div>
     `
 }
+
 function mmxToChar(_, index) {
     return String.fromCharCode(CODES.A + index)
 }
@@ -42,14 +50,14 @@ export function createTable(rowsTable = 50) {
         }).join('')
         */
 
-    rows.push(createRow(cols))
+    rows.push(createRow(null, cols))
 
     for(let i = 0; i < rowsTable; i++) {
         const cell = new Array(colsCount)
             .fill('')
             .map(toCell)
             .join('')
-        rows.push(createRow(cell, i+1))
+        rows.push(createRow(i+1, cell ))
     }
 
     return rows.join('')
