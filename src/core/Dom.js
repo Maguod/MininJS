@@ -13,9 +13,36 @@ class Dom {
         }
         return this.$el.outerHTML.trim()
     }
-
+    text(text) {
+        if(typeof text === 'string' ) {
+            this.$el.textContent = text
+            return this
+        }
+        //проверяем что если значение пришло из input, для точности название тэга приводим к нижнему регистру
+        if(this.$el.tagName.toLowerCase() === 'input') {
+            return this.$el.value.trim()
+        }
+        return this.$el.textContent.trim()
+    }
     clear() {
         this.html('')
+        return this
+    }
+    find(selector) {
+        return $(this.$el.querySelector(selector))
+    }
+    id(parsElem) {
+        if(parsElem) {
+            const $pars = this.id().split(':')
+            return {
+                row: +$pars[0],
+                col: +$pars[1],
+            }
+        }
+        return this.data.id
+    }
+    focus() {
+        this.$el.focus()
         return this
     }
     //node это элемент
@@ -58,8 +85,17 @@ class Dom {
 
         }
     }
+    addClass(className) {
+        this.$el.classList.add(className)
+        return this
+    }
+    removeClass(className) {
+        this.$el.classList.remove(className)
+        return this
+    }
     on(eventType, callback) {
         this.$el.addEventListener(eventType, callback)
+
     }
 
     off(eventType, callback) {
