@@ -14,7 +14,7 @@ class Dom {
         return this.$el.outerHTML.trim()
     }
     text(text) {
-        if(typeof text === 'string' ) {
+        if(typeof text !== 'undefined' ) {  // до 6.22 урока была проверка typeof text === 'string'
             this.$el.textContent = text
             return this
         }
@@ -24,6 +24,15 @@ class Dom {
         }
         return this.$el.textContent.trim()
     }
+
+    attr(name, value) {
+        if(value) {
+            this.$el.setAttribute(name, value)
+            return this
+        }
+        return this.$el.getAttribute(name)
+    }
+
     clear() {
         this.html('')
         return this
@@ -74,17 +83,27 @@ class Dom {
         return this.$el.querySelectorAll(selector)
     }
     css(styles = {}) {
-        for (const styleEl in styles)  {
+        // for (const styleEl in styles)  {
             //проверка. Она обязательна для этого цикла for in
             // if(styles.hasOwnProperty(styleEl)) {
             //     console.log(styleEl, styles[styleEl])
             // } поэтому для обхода объекта используем более простую и удобную конструкцию
-            Object.keys(styles).forEach(key => {
+            Object
+                .keys(styles)
+                .forEach(key => {
                 this.$el.style[key] = styles[key]
             })
 
-        }
+        // }
     }
+
+    getStyles(styles = []) {
+        return styles.reduce((res, style) => {
+            res[style] = this.$el.style[style]
+            return res
+        }, {})
+    }
+
     addClass(className) {
         this.$el.classList.add(className)
         return this
