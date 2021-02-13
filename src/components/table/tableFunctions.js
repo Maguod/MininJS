@@ -6,7 +6,7 @@ export function shouldResize(event) {
 export function isCell(event) {
    return event.target.dataset.type === 'cell'
 }
-export function matrix($current, $target) {
+export function matrix($target, $current) {
     const target = $target.id(true)
     const current = $current.id(true)
     const cols = range(current.col, target.col)
